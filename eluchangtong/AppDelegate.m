@@ -59,6 +59,7 @@ BMKMapManager *_mapManager;
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
+    
 
 #if !(TARGET_IPHONE_SIMULATOR)
     [self confirmationWasHidden:nil];
@@ -82,6 +83,7 @@ BMKMapManager *_mapManager;
     }
     else if ([launchOptions objectForKey:@"UIApplicationLaunchOptionsLocalNotificationKey"])
     {
+        
         [self performSelector:@selector(handleLocalNotification) withObject:nil afterDelay:1.0f];
     }
     return YES;
@@ -93,12 +95,10 @@ BMKMapManager *_mapManager;
     {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound|UIRemoteNotificationTypeNewsstandContentAvailability)];
     }
-    
     else
     {
         [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationType)(UIRemoteNotificationTypeBadge|UIRemoteNotificationTypeAlert|UIRemoteNotificationTypeSound)];
     }
-    
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
@@ -110,8 +110,9 @@ BMKMapManager *_mapManager;
         return;
     }
     
+    
     pushToken = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    pushToken = [pushToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    pushToken = [pushToken stringByReplacingOccurrencesOfString:@"" withString:@""];
     NSLog(@"%@",pushToken);
 }
 
