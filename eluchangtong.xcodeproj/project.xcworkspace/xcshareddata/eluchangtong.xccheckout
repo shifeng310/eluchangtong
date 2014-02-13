@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>C1C68736-621D-4BE3-BAD0-7BCD3B793325</string>
+	<key>IDESourceControlProjectName</key>
+	<string>eluchangtong</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FA76EB17-295D-4633-8546-232A877DECAD</key>
+		<string>svn://192.168.10.13/web_server/iphone/eluchangtong</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>eluchangtong.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FA76EB17-295D-4633-8546-232A877DECAD</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectRepositoryRootDictionary</key>
+	<dict>
+		<key>FA76EB17-295D-4633-8546-232A877DECAD</key>
+		<string>svn://192.168.10.13/web_server</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>svn://192.168.10.13/web_server/iphone/eluchangtong/eluchangtong.xcodeproj</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FA76EB17-295D-4633-8546-232A877DECAD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.subversion</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FA76EB17-295D-4633-8546-232A877DECAD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>eluchangtong</string>
+		</dict>
+	</array>
+</dict>
+</plist>

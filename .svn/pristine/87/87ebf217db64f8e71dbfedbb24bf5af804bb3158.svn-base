@@ -1,0 +1,590 @@
+//
+//  HomeViewController.m
+//  eluchangtong
+//
+//  Created by 方鸿灏 on 12-11-5.
+//  Copyright (c) 2012年 方鸿灏. All rights reserved.
+//
+
+#import "HomeViewController.h"
+#import "NavBaseViewController.h"
+#import "RRToken.h"
+#import "RRURLRequest.h"
+#import "RRLoader.h"
+#import "RWAlertView.h"
+#import "RWShowView.h"
+#import "RoadRover.h"
+#import "AppDelegate.h"
+#import "SFHFKeychainUtils.h"
+#import "MsgListController.h"
+#import "UsrTelViewController.h"
+#import "NavController.h"
+#import "UsrProfileListController.h"
+#import "DriveRecordListController.h"
+#import "PoiViewController.h"
+#import "ServiceBaseViewController.h"
+#import "NoticeListViewController.h"
+#import "RemoteViewController.h"
+
+@implementation HomeViewController
+@synthesize im_bg;
+@synthesize btn_msg;
+@synthesize btn_nav;
+@synthesize btn_no;
+@synthesize btn_note;
+@synthesize btn_poi;
+@synthesize btn_remote;
+@synthesize btn_serv;
+@synthesize btn_set;
+@synthesize btn_tel;
+@synthesize lb_msg;
+@synthesize lb_nav;
+@synthesize lb_note;
+@synthesize lb_poi;
+@synthesize lb_remote;
+@synthesize lb_serv;
+@synthesize lb_tel;
+@synthesize lb_tips;
+@synthesize tips_arr;
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.title = @"e路畅通";
+    if ([[UIScreen mainScreen] bounds].size.height == 568.0f)
+    {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_bg-568h.png"]]];
+        btn_no.frame = CGRectMake(btn_no.frame.origin.x, btn_no.frame.origin.y + 80.0f, btn_no.frame.size.width, btn_no.frame.size.height);
+        btn_set.frame = CGRectMake(btn_set.frame.origin.x, btn_set.frame.origin.y + 80.0f, btn_set.frame.size.width, btn_set.frame.size.height);
+
+    }
+    else
+    {
+        [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"home_bg.png"]]];
+    }
+    UIBarButtonItem *bg = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:nil];
+    self.navigationItem.backBarButtonItem = bg;
+    is_init = YES;
+    tips_arr = [NSMutableArray arrayWithCapacity:0];
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [lb_no removeFromSuperview];
+    [timer invalidate];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    AppDelegate *delegate = [AppDelegate getInstance];
+    delegate.delegate = self;
+    [delegate performSelector:@selector(checkToken) withObject:nil afterDelay:0.3f];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    if([self isViewLoaded] && self.view.window == nil)
+    {
+        self.view = nil;
+        im_bg = nil;
+        btn_msg = nil;
+        btn_nav = nil;
+        btn_no = nil;
+        btn_note = nil;
+        btn_poi = nil;
+        btn_remote = nil;
+        btn_serv = nil;
+        btn_set = nil;
+        btn_tel = nil;
+        lb_msg = nil;
+        lb_nav = nil;
+        lb_note = nil;
+        lb_poi = nil;
+        lb_remote = nil;
+        lb_serv = nil;
+        lb_tel = nil;
+        lb_tips = nil;
+    }
+}
+
+- (IBAction)btn_click:(id)sender
+{
+    UIColor *color = [UIColor whiteColor];
+    switch ([sender tag])
+    {
+        case 1:
+        {
+            lb_tel.textColor = color;
+            
+            NSString *title = @"温馨提示";
+            NSString *message = @"拨打该电话进入系统人工服务平台,可进行目的地查询、车辆保养、保险、车况等信息咨询.";
+            AppDelegate *del = [AppDelegate getInstance];
+            [del applyCustomAlertAppearance];
+            
+            AHAlertView *_alert = [[AHAlertView alloc] initWithTitle:title message:message andDelegate:self];
+            __weak AHAlertView *alert = _alert;
+
+            [alert setCancelButtonTitle:@"确定" block:^{
+                alert.dismissalStyle = AHAlertViewDismissalStyleZoomDown;
+            }];
+
+            [alert setAlertViewStyle:AHAlertViewStyleDefault];
+            [alert show];
+
+            break;
+        }
+        case 2:
+        {
+            lb_nav.textColor = color;
+            NavBaseViewController *ctrl = [[NavBaseViewController alloc]initWithNibName:@"NavBaseViewController" bundle:nil];
+            [self.navigationController pushViewController:ctrl animated:YES];
+            break;
+        }
+        case 3:
+        {
+            lb_serv.textColor = color;
+            ServiceBaseViewController *ctrl = [[ServiceBaseViewController alloc]initWithNibName:@"ServiceBaseViewController" bundle:nil];
+            [self.navigationController pushViewController:ctrl animated:YES];
+
+            break;
+        }
+        case 4:
+        {
+            lb_poi.textColor = color;
+            PoiViewController *ctrl = [[PoiViewController alloc]initWithNibName:@"PoiViewController" bundle:nil];
+            [self.navigationController pushViewController:ctrl animated:YES];
+            break;
+        }
+        case 5:
+        {
+            lb_note.textColor = color;
+            DriveRecordListController *ctrl = [[DriveRecordListController alloc]initWithNibName:@"DriveRecordListController" bundle:nil];
+            [self.navigationController pushViewController:ctrl animated:YES];
+            break;
+        }
+        case 6:
+        {
+            lb_remote.textColor = color;
+            RemoteViewController *ctrl = [[RemoteViewController alloc]initWithNibName:nil bundle:nil];
+            [self.navigationController pushViewController:ctrl animated:YES];
+            break;
+        }
+        case 7:
+        {
+            lb_msg.textColor = color;
+            MsgListController *ctrl = [[MsgListController alloc]initWithStyle:UITableViewStylePlain];
+            [self.navigationController pushViewController:ctrl animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
+
+}
+
+- (IBAction)btn_touch:(id)sender
+{
+    UIColor *color = [UIColor colorWithRed:67.0f/255.0f green:226.0f/255.0f blue:255.0f/255.0f alpha:1.0f];
+    switch ([sender tag])
+    {
+        case 1:
+            lb_tel.textColor = color;
+            break;
+        case 2:
+            lb_nav.textColor = color;
+            break;
+        case 3:
+            lb_serv.textColor = color;
+            break;
+        case 4:
+            lb_poi.textColor = color;
+            break;
+        case 5:
+            lb_note.textColor = color;
+            break;
+        case 6:
+            lb_remote.textColor = color;
+            break;
+        case 7:
+            lb_msg.textColor = color;
+            break;
+        default:
+            break;
+    }
+    
+}
+
+- (IBAction)btn_touch_cancl:(id)sender
+{
+    UIColor *color = [UIColor whiteColor];
+    switch ([sender tag])
+    {
+        case 1:
+            lb_tel.textColor = color;
+            break;
+        case 2:
+            lb_nav.textColor = color;
+            break;
+        case 3:
+            lb_serv.textColor = color;
+            break;
+        case 4:
+            lb_poi.textColor = color;
+            break;
+        case 5:
+            lb_note.textColor = color;
+            break;
+        case 6:
+            lb_remote.textColor = color;
+            break;
+        case 7:
+            lb_msg.textColor = color;
+            break;
+        default:
+            break;
+    }
+
+
+}
+
+- (void)btn_did_click:(id)sender
+{
+    RRToken *token = [RRToken getInstance];
+    tel = [token getProperty:@"service_tel"];
+    NSLog(@"%@",tel);
+    NSURL *phoneNumberURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", tel]];
+    
+    if (![[UIApplication sharedApplication] canOpenURL:phoneNumberURL])
+    {
+        NSString *title = @"温馨提示";
+        NSString *message = @"设备没有电话能力!";
+        AppDelegate *del = [AppDelegate getInstance];
+        [del applyCustomAlertAppearance];
+        AHAlertView *alert = [[AHAlertView alloc] initWithTitle:title message:message andDelegate:self];
+        [alert setAlertViewStyle:AHAlertViewStyleDefault];
+        [alert show];
+        return;
+    }
+    [[UIApplication sharedApplication] openURL:phoneNumberURL];
+
+//    UIActionSheet *as = [[UIActionSheet alloc] initWithTitle:@"确定拨打？"
+//                                                    delegate:self
+//                                           cancelButtonTitle:@"取消"
+//                                      destructiveButtonTitle:tel
+//                                           otherButtonTitles:nil];
+//    as.tag = 101;
+//    [as performSelector:@selector(showInView:) withObject:self.view afterDelay:0.5f];
+//
+ }
+
+- (IBAction)btn_no_click:(id)sender
+{
+    UsrTelViewController *ctrl = [[UsrTelViewController alloc]initWithNibName:@"UsrTelViewController" bundle:nil];
+    NavController *nav = [[NavController alloc]initWithRootViewController:ctrl];
+    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+    [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [self.navigationController presentModalViewController:nav animated:YES];
+}
+
+- (IBAction)btn_set_click:(id)sender
+{
+    UsrProfileListController *ctrl = [[UsrProfileListController alloc]initWithNibName:@"UsrProfileListController" bundle:nil];
+    NavController *nav = [[NavController alloc]initWithRootViewController:ctrl];
+    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+    [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+    [self.navigationController presentModalViewController:nav animated:YES];
+}
+
+#pragma mark check token
+
+- (void) checkTokenSuccess
+{
+    [self changeLocalNotification];
+    RRToken *token = [RRToken getInstance];
+    if (lb_no)
+    {
+        [lb_no removeFromSuperview];
+    }
+    lb_no = [[UILabel alloc]initWithFrame:CGRectMake(10.0f, 12.0f, 100.0f, 20.0f)];
+    lb_no.text = [NSString stringWithFormat:@"服务号:%@",[token getProperty:@"service_number"]];
+    lb_no.textColor = [UIColor whiteColor];
+    lb_no.font = [UIFont fontWithName:@"Helvetica-Bold" size:14.0f];
+    lb_no.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:lb_no];
+    
+    if (is_init)
+    {
+        is_init = NO;
+        [self initSystem];
+    }
+    
+    if (tips_arr)
+    {
+        [tips_arr removeAllObjects];
+    }
+    
+    UIApplication *app = [UIApplication sharedApplication];
+	NSArray *oldNotifications = [app scheduledLocalNotifications];
+	if (0 < [oldNotifications count])
+    {
+        for (UILocalNotification *notification in oldNotifications)
+        {
+            if ([[self getTimeStringWithDate:notification.fireDate] integerValue] <= [[self getCurrentTime]integerValue])
+            {
+                [tips_arr addObject:notification.userInfo];
+            }
+        }
+	}
+    
+        [self setTipsLable];
+}
+
+- (void)changeLocalNotification
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *last_server_no = [defaults objectForKey:@"last_server_no"];
+    RRToken *token = [RRToken getInstance];
+    NSString *server_no = [token getProperty:@"service_number"];
+    if (last_server_no && ![last_server_no isEqualToString:server_no])
+    {
+        [msgs_arr removeAllObjects];
+        [defaults setObject:server_no forKey:@"last_server_no"];
+        UIApplication *app = [UIApplication sharedApplication];
+        NSArray *oldNotifications = [app scheduledLocalNotifications];
+        if (0 < [oldNotifications count])
+        {
+            for (UILocalNotification *notification in oldNotifications)
+            {
+                [app cancelLocalNotification:notification];
+            }
+        }
+    }
+}
+
+- (NSString *)getTimeStringWithDate:(NSDate *)date
+{
+    NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+    [formater setDateFormat:@"yyyy-MM-dd"];
+    NSString * curTime = [formater stringFromDate:date];
+    NSDate *theDate=[formater dateFromString:curTime];
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    [formater setTimeZone:timeZone];
+    NSTimeInterval b =[theDate timeIntervalSince1970];
+    NSString *timeString = [NSString stringWithFormat:@"%0.0f",b];
+    return timeString;
+}
+
+- (void) alertViewDidCancel
+{
+    
+}
+
+- (void)initSystem
+{
+	NSString *full_url = [NSString stringWithFormat:@"%@%@", BASE_URL, INIT_URL];
+	RRToken *token = [RRToken getInstance];
+	RRURLRequest *req = [[RRURLRequest alloc] initWithURLString:full_url];
+	[req setParam:[token getProperty:@"tokensn"] forKey:@"token"];
+    AppDelegate *delegate = [AppDelegate getInstance];
+    if ([delegate.pushToken length])
+    {
+        [req setParam:delegate.pushToken forKey:@"devicetoken"];
+    }
+
+	[req setHTTPMethod:@"POST"];
+	RRLoader *loader = [[RRLoader alloc] initWithRequest:req];
+	[loader addNotificationListener:RRLOADER_FAIL target:self action:@selector(onFetchFail:)];
+	[loader addNotificationListener:RRLOADER_COMPLETE target:self action:@selector(onInitSystem:)];
+	[loader loadwithTimer];
+}
+
+- (void)onInitSystem:(NSNotification *)notify
+{
+    [RWShowView closeAlert];
+	RRLoader *loader = (RRLoader *)[notify object];
+	NSDictionary *json = [loader getJSONData];
+	[loader removeNotificationListener:RRLOADER_FAIL target:self];
+	[loader removeNotificationListener:RRLOADER_COMPLETE target:self];
+	
+	if (![[json objectForKey:@"success"] boolValue])
+	{
+        if ([[json objectForKey:@"errcode"] integerValue] == 600)
+        {
+            [RWAlertView show:@"登录指令失效,请重新登录!"];
+            RRToken *token = [RRToken getInstance];
+            [RRToken removeTokenForUID:[token getProperty:@"uid"]];
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"last_login_uid"];
+            
+            AppDelegate *dele = [AppDelegate getInstance];
+            dele.delegate = self;
+            [dele checkToken];
+            return;
+        }
+	}
+    
+    tel = [[json objectForKey:@"data"] objectForKey:@"tel"];
+    RRToken *token = [RRToken getInstance];
+    [token setProperty:tel forKey:@"service_tel"];
+	[token saveToFile];
+}
+
+- (void)onFetchFail:(NSNotification *)notify
+{
+    
+}
+
+#pragma mark -
+#pragma mark UIActionSheetDelegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+	if (actionSheet.tag == 101 && buttonIndex == 0)
+	{
+		NSURL *phoneNumberURL = [NSURL URLWithString:[NSString stringWithFormat:@"tel://%@", tel]];
+		
+		if (![[UIApplication sharedApplication] canOpenURL:phoneNumberURL])
+		{
+            NSString *title = @"温馨提示";
+            NSString *message = @"设备没有电话能力!";
+            AppDelegate *del = [AppDelegate getInstance];
+            [del applyCustomAlertAppearance];
+            AHAlertView *alert = [[AHAlertView alloc] initWithTitle:title message:message andDelegate:self];
+            [alert setAlertViewStyle:AHAlertViewStyleDefault];
+            [alert show];
+			return;
+		}
+		[[UIApplication sharedApplication] openURL:phoneNumberURL];
+		return;
+	}
+	
+	else if (actionSheet.tag == 101 && buttonIndex == 1)
+	{
+		return;
+	}
+}
+
+- (NSString *)getCurrentTime
+{
+    NSDate *date1 = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSDateFormatter *formater = [[ NSDateFormatter alloc] init];
+    [formater setDateFormat:@"yyyy-MM-dd"];
+    NSString * curTime = [formater stringFromDate:date1];
+    NSDate *theDate=[formater dateFromString:curTime];
+    NSTimeZone* timeZone = [NSTimeZone timeZoneWithName:@"Asia/Shanghai"];
+    [formater setTimeZone:timeZone];
+    NSTimeInterval b =[theDate timeIntervalSince1970];
+    NSString *timeString = [NSString stringWithFormat:@"%0.0f",b];
+    return timeString;
+}
+
+- (void) setTipsArr:(NSMutableArray *)arr
+{
+    if (!tips_arr)
+    {
+        tips_arr = [NSMutableArray arrayWithCapacity:0];
+    }
+    
+    [tips_arr addObjectsFromArray:arr];
+}
+
+- (void) setMsgsArr:(NSMutableArray *)arr
+{
+    if (!msgs_arr)
+    {
+        msgs_arr = [NSMutableArray arrayWithCapacity:0];
+    }
+    
+    [msgs_arr addObjectsFromArray:arr];
+}
+
+
+- (void)setTipsLable
+{
+    notice_arr = [NSMutableArray array];
+    if ([msgs_arr count])
+    {
+        [notice_arr addObjectsFromArray:msgs_arr];
+    }
+    if ([tips_arr count])
+    {
+        [notice_arr addObjectsFromArray:tips_arr];
+    }
+    if ([notice_arr count] == 0)
+    {
+        lb_tips.text = @"";
+        return;
+    }
+    
+    lb_tips.userInteractionEnabled = YES;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(btn_lable_clcik:)];
+    [lb_tips addGestureRecognizer:singleTap];
+    lb_tips.text = [NSString stringWithFormat:@"%@:%@",[[notice_arr objectAtIndex:0] objectForKey:@"title"],[[notice_arr objectAtIndex:0] objectForKey:@"msg"]];
+    index = 0;
+    if ([notice_arr count] > 1)
+    {
+        if (timer)
+        {
+            [timer invalidate];
+            timer = nil;
+        }
+        timer = [NSTimer scheduledTimerWithTimeInterval:3
+                                                 target:self
+                                               selector:@selector(timeHandle)
+                                               userInfo:nil
+                                                repeats:YES];
+    }
+}
+
+- (void)timeHandle
+{
+    index = index + 1;
+    if (index == [notice_arr count])
+    {
+        index = 0;
+    }
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:1];
+	[UIView setAnimationDelegate:self];
+    lb_tips.alpha = 0;
+	[UIView commitAnimations];
+    
+    [UIView beginAnimations:nil context:nil];
+	[UIView setAnimationDuration:1];
+	[UIView setAnimationDelegate:self];
+    lb_tips.alpha = 1;
+    lb_tips.text = [NSString stringWithFormat:@"%@:%@",[[notice_arr objectAtIndex:index] objectForKey:@"title"],[[notice_arr objectAtIndex:index] objectForKey:@"msg"]];
+	[UIView commitAnimations];
+}
+
+- (void)btn_lable_clcik:(id)sender
+{
+    NSDictionary *dic =[notice_arr objectAtIndex:index];
+    if ([[dic objectForKey:@"type"] isEqualToString:@"msg"])
+    {
+        [msgs_arr removeAllObjects];
+        MsgListController *ctrl = [[MsgListController alloc]initWithStyle:UITableViewStylePlain];
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
+    else
+    {
+        NoticeListViewController *ctrl = [[NoticeListViewController alloc] initWithStyle:UITableViewStylePlain];
+        [ctrl setTipsArr:self.tips_arr];
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
+}
+@end
