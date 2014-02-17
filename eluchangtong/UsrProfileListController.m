@@ -623,8 +623,8 @@ static CGFloat INTRODUCE_FONT_SIZE = 15.0f;
 	UsrProfileEditController *ctrl = [[UsrProfileEditController alloc] initWithStyle:UITableViewStyleGrouped];
     [ctrl setUserProfile:dict];
 	NavController *nav = [[NavController alloc]initWithRootViewController:ctrl];
-    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
-    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+//    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+//    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
 	[nav setModalTransitionStyle:UIModalTransitionStyleFlipHorizontal];
 	[self.navigationController presentModalViewController:nav animated:YES];
 

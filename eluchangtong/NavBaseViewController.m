@@ -89,7 +89,6 @@
 	refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithoutDateLabel:top_rect];
 	refreshHeaderView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background_view.png"]];
 	[self.poi_tableView addSubview:refreshHeaderView];
-
     [self addMapView];
     
     search_bar = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"search_bar_bg.png"]];
@@ -102,7 +101,7 @@
     search_bar.layer.shadowOffset = CGSizeMake(1, -1);
     search_bar.layer.shadowColor = [[UIColor darkGrayColor] CGColor];
     search_bar.layer.shadowOpacity = 0.6;
-
+    
     UILabel *lb = [[UILabel alloc]initWithFrame:CGRectMake(25.0f, 0.0f, 180.0f, 31.0f)];
     lb.text = @"请输入地址";
     lb.backgroundColor = [UIColor clearColor];
@@ -116,10 +115,10 @@
     is_current = YES;
     
     btn_edit = [[UIBarButtonItem alloc]initWithTitle:@"编辑" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_edit_click:)];
-    
-    btn_map = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_map_click:)];
-
+    btn_map =  [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_map_click:)];
     btn_list = [[UIBarButtonItem alloc]initWithTitle:@"列表" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_list_click:)];
+    
+    //self.edgesForExtendedLayout = UIRectEdgeNone;
 
 }
 

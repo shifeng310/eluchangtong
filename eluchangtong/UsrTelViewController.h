@@ -16,7 +16,7 @@
     IBOutlet UITextField         *tf_tel_gongsi;
     IBOutlet UITextField         *tf_tel_jiaren;
     IBOutlet UITextField         *tf_tel_qita;
-    IBOutlet UIScrollView        *scrollView;
+ //   IBOutlet UIScrollView        *scrollView;
     IBOutlet UIView              *bg_view;
 
 
@@ -54,7 +54,7 @@
 @property(nonatomic,strong)UITextField *tf_tel_jiaren;
 @property(nonatomic,strong)UITextField *tf_tel_qita;
 @property(nonatomic,strong)UIButton *btn_tel;
-@property(nonatomic,strong)UIScrollView *scrollView;
+//@property(nonatomic,strong)UIScrollView *scrollView;
 @property(nonatomic,strong)UIView *bg_view;
 
 

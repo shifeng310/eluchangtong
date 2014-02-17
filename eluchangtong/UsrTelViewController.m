@@ -23,7 +23,7 @@
 @synthesize tf_tel_jinji;
 @synthesize tf_tel_qita;
 @synthesize btn_tel;
-@synthesize scrollView;
+//@synthesize scrollView;
 @synthesize bg_view;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -38,36 +38,32 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     self.title = @"常用电话";
+    
     [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_view.png"]]];
-    [self.bg_view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_view.png"]]];
     
-    scrollView.frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen]bounds].size.height);
-    bg_view.frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen]bounds].size.height);
-    [scrollView addSubview:bg_view];
-    scrollView.scrollEnabled = NO;
-    scrollView.delegate = self;
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height * 1.5);
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
+    //[self.bg_view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"background_view.png"]]];
+    
+//    scrollView.frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen]bounds].size.height);
+    
+    //bg_view.frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen]bounds].size.height);
+    
+//    [scrollView addSubview:bg_view];
+//    
+//     scrollView.scrollEnabled = NO;
+//     scrollView.delegate = self;
+//     scrollView.contentSize = CGSizeMake(scrollView.frame.size.width, scrollView.frame.size.height * 1.5);
+//     scrollView.showsHorizontalScrollIndicator = NO;
+//     scrollView.showsVerticalScrollIndicator = NO;
 
-    fours = @"点击设置号码";
-    baoxian = @"点击设置号码";
-    gongsi = @"点击设置号码";
-    jiaren = @"点击设置号码";
-    jinji = @"点击设置号码";
-    qita = @"点击设置号码";
-
-    btn_back_item = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_back_click:) ];
+    btn_back_item = [[UIBarButtonItem alloc]initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_back_click:)];
     self.navigationItem.leftBarButtonItem = btn_back_item;
-    
     btn_save = [[UIBarButtonItem alloc]initWithTitle:@"保存" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_save_click:)];
+    self.navigationItem.rightBarButtonItem = btn_save;
 
     AppDelegate *dele = [AppDelegate getInstance];
     dele.delegate = self;
     [dele checkToken];
-
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,7 +79,7 @@
         tf_tel_jinji = nil;
         tf_tel_qita = nil;
         btn_tel = nil;
-        scrollView = nil;
+  //      scrollView = nil;
         bg_view = nil;
     }
 }
@@ -97,7 +93,7 @@
     tf_tel_jinji = nil;
     tf_tel_qita = nil;
     btn_tel = nil;
-    scrollView = nil;
+//    scrollView = nil;
     bg_view = nil;
 }
 
@@ -173,6 +169,8 @@
     
     [self setTextField];
 }
+
+
 
 - (void) save
 {
@@ -364,12 +362,12 @@
 - (void)btn_save_click:(id)sender
 {
     [active_field resignFirstResponder];
-    scrollView.scrollEnabled = NO;
-    CGRect frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen] bounds].size.height);
+  //  scrollView.scrollEnabled = NO;
+  //  CGRect frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen] bounds].size.height);
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.20];
     [UIView setAnimationDelegate:self];
-    [scrollView scrollRectToVisible:frame animated:YES];
+ //   [scrollView scrollRectToVisible:frame animated:YES];
     [UIView commitAnimations];
     [self save];
 }
@@ -473,6 +471,21 @@
 #pragma mark -
 #pragma mark UITextField Delegate
 
+- (IBAction)view_touchDown:(id)sender {
+    // 发送resignFirstResponder.
+    [[UIApplication sharedApplication] sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
+}
+
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"dianji ");
+    if ([tf_tel_4s isExclusiveTouch]) {
+        [tf_tel_4s resignFirstResponder];
+    }
+}
+
+//-(IBAction) dismiss
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     return YES;
@@ -489,12 +502,12 @@
     
     else
     {
-        scrollView.scrollEnabled = NO;
-        CGRect frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen] bounds].size.height);
+//        scrollView.scrollEnabled = NO;
+//        CGRect frame = CGRectMake(0.0f, 0.0f, 320.0f, [[UIScreen mainScreen] bounds].size.height);
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.20];
         [UIView setAnimationDelegate:self];
-        [scrollView scrollRectToVisible:frame animated:YES];
+     //   [scrollView scrollRectToVisible:frame animated:YES];
         [UIView commitAnimations];
     }
 
@@ -511,14 +524,13 @@
     {
         if ([textField tag] >= 14)
         {
-            scrollView.scrollEnabled = YES;
-            
+    //        scrollView.scrollEnabled = YES;
             float ext_height = textField.frame.origin.y - 50;
-            CGRect frame = CGRectMake(0.0f, ext_height, 320.0f, [[UIScreen mainScreen] bounds].size.height);
+   //         CGRect frame = CGRectMake(0.0f, ext_height, 320.0f, [[UIScreen mainScreen] bounds].size.height);
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationDuration:0.20];
             [UIView setAnimationDelegate:self];
-            [scrollView scrollRectToVisible:frame animated:YES];
+ //           [scrollView scrollRectToVisible:frame animated:YES];
             [UIView commitAnimations];
         }
 
@@ -526,14 +538,14 @@
     
     else if ([textField tag] >= 12)
     {
-        scrollView.scrollEnabled = YES;
+    //    scrollView.scrollEnabled = YES;
 
-        float ext_height = textField.frame.origin.y - 50;
-        CGRect frame = CGRectMake(0.0f, ext_height, 320.0f, [[UIScreen mainScreen] bounds].size.height);
+   //     float ext_height = textField.frame.origin.y - 50;
+      //  CGRect frame = CGRectMake(0.0f, ext_height, 320.0f, [[UIScreen mainScreen] bounds].size.height);
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.20];
         [UIView setAnimationDelegate:self];
-        [scrollView scrollRectToVisible:frame animated:YES];
+   //     [scrollView scrollRectToVisible:frame animated:YES];
         [UIView commitAnimations];
     }
     

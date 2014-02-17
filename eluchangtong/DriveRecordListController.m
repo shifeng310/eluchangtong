@@ -46,6 +46,7 @@
     AppDelegate *dele = [AppDelegate getInstance];
     dele.delegate = self;
     [dele checkToken];
+   // self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
 

@@ -157,6 +157,7 @@ BOOL isRetina = FALSE;
     AppDelegate *dele = [AppDelegate getInstance];
     dele.delegate = self;
     [dele checkToken];
+   // self.edgesForExtendedLayout = UIRectEdgeNone;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -901,8 +902,8 @@ BOOL isRetina = FALSE;
 	nav = [[NavController alloc] initWithRootViewController:ctrl];
 	if ([[[UIDevice currentDevice]systemVersion]floatValue]>= 5.0)
 	{
-        [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
-        [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+//        [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+//        [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
 	}
 	
 	[nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];

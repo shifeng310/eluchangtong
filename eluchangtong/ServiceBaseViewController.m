@@ -90,6 +90,7 @@ static CGFloat CGAffineTransformGetAbsoluteRotationAngleDifference(CGAffineTrans
     [dele checkToken];
     
     btn_certain_tmp = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStyleDone target:self action:@selector(btn_certain_tmp_click:)];
+    
     btn_cancel = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStyleBordered target:self action:@selector(btn_cancel_click:)];
     btn_title = [[UIBarButtonItem alloc]initWithTitle:@"选择本次保养时间" style:UIBarButtonItemStylePlain target:self action:nil];
 
@@ -99,6 +100,8 @@ static CGFloat CGAffineTransformGetAbsoluteRotationAngleDifference(CGAffineTrans
     tool_bar_tmp.barStyle = UIBarStyleBlack;
     tool_bar_tmp.translucent = YES;
     [tool_bar_tmp setItems:arr animated:NO];
+    
+   // self.edgesForExtendedLayout = UIRectEdgeNone;
 
 }
 
@@ -919,6 +922,14 @@ static CGFloat CGAffineTransformGetAbsoluteRotationAngleDifference(CGAffineTrans
 #pragma mark -
 #pragma mark UITextField Delegate
 
+-(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITextField *textField = [[UITextField alloc] init];
+    if (![textField isExclusiveTouch]) {
+        [textField resignFirstResponder];
+    }
+}
+
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     return YES;
@@ -1510,6 +1521,7 @@ static CGFloat CGAffineTransformGetAbsoluteRotationAngleDifference(CGAffineTrans
     [self reposition];
 
 }
+
 
 - (void)performDismissalAnimation
 {

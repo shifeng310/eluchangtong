@@ -51,13 +51,14 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+       
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     self.title = @"e路畅通";
     if ([[UIScreen mainScreen] bounds].size.height == 568.0f)
@@ -77,6 +78,11 @@
     self.navigationItem.backBarButtonItem = bg;
     is_init = YES;
     tips_arr = [NSMutableArray arrayWithCapacity:0];
+    
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue]>=7.0) {
+//        self.edgesForExtendedLayout = UIRectEdgeNone;
+//    }
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -294,18 +300,20 @@
 {
     UsrTelViewController *ctrl = [[UsrTelViewController alloc]initWithNibName:@"UsrTelViewController" bundle:nil];
     NavController *nav = [[NavController alloc]initWithRootViewController:ctrl];
-    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
-    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+    
+//    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+//    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+    
     [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self.navigationController presentModalViewController:nav animated:YES];
 }
 
 - (IBAction)btn_set_click:(id)sender
 {
-    UsrProfileListController *ctrl = [[UsrProfileListController alloc]initWithNibName:@"UsrProfileListController" bundle:nil];
+    UsrProfileListController *ctrl = [[UsrProfileListController alloc] initWithNibName:@"UsrProfileListController" bundle:nil];
     NavController *nav = [[NavController alloc]initWithRootViewController:ctrl];
-    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
-    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+//    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+//    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
     [nav setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [self.navigationController presentModalViewController:nav animated:YES];
 }

@@ -50,15 +50,18 @@ BMKMapManager *_mapManager;
     application.applicationSupportsShakeToEdit = YES;
     instance = self;
     tips_arr = [NSMutableArray arrayWithCapacity:0];
-    HomeViewController *ctrl = [[HomeViewController alloc]initWithNibName:@"HomeViewController" bundle:nil];
-    NavController *nav = [[NavController alloc]initWithRootViewController:ctrl];
-    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
-    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
+    HomeViewController *ctrl = [[HomeViewController alloc] initWithNibName:@"HomeViewController" bundle:nil];
+    NavController *nav = [[NavController alloc] initWithRootViewController:ctrl];
+    
+//    [nav.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
+//    [nav.navigationBar setTintColor:[UIColor colorWithRed:71.0f/255.0f green:158.0f/255.0f blue:204.0f/255.0f alpha:1.0f]];
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = nav;
     [self.window makeKeyAndVisible];
+    
+    [self customizeInterface];
     
 
 #if !(TARGET_IPHONE_SIMULATOR)
@@ -109,7 +112,6 @@ BMKMapManager *_mapManager;
     {
         return;
     }
-    
     
     pushToken = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
     pushToken = [pushToken stringByReplacingOccurrencesOfString:@"" withString:@""];
@@ -551,6 +553,39 @@ BMKMapManager *_mapManager;
     [alert show];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
     
+}
+
+#pragma mark 全局变量适配ios 6.0/7.0 UINavigationBar
+
+- (void)customizeInterface {
+    UINavigationBar *navigationBarAppearance = [UINavigationBar appearance];
+    
+    if ([[[UIDevice currentDevice] systemVersion] integerValue] >= 7.0) {
+        [navigationBarAppearance setBackgroundImage:[UIImage imageNamed:@"navigationbar_background_tall"]
+                                      forBarMetrics:UIBarMetricsDefault];
+        [navigationBarAppearance setTintColor:[UIColor whiteColor]];
+    } else {
+        [navigationBarAppearance setBackgroundImage:[UIImage imageNamed:@"navigationbar_background"]
+                                      forBarMetrics:UIBarMetricsDefault];
+    }
+    
+    NSDictionary *textAttributes = nil;
+    if ([[[UIDevice currentDevice] systemVersion] integerValue] >= 7.0) {
+        textAttributes = @{
+                           NSFontAttributeName: [UIFont boldSystemFontOfSize:20],
+                           NSForegroundColorAttributeName: [UIColor whiteColor],
+                           };
+    } else {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_7_0
+        textAttributes = @{
+                           UITextAttributeFont: [UIFont boldSystemFontOfSize:20],
+                           UITextAttributeTextColor: [UIColor whiteColor],
+                           UITextAttributeTextShadowColor: [UIColor clearColor],
+                           UITextAttributeTextShadowOffset: [NSValue valueWithUIOffset:UIOffsetZero],
+                           };
+#endif
+    }
+    [navigationBarAppearance setTitleTextAttributes:textAttributes];
 }
 
 @end
